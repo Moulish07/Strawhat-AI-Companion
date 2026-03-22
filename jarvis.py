@@ -31,7 +31,7 @@ def speak(audio):
         # Initialize it exactly when the background thread first speaks!
         engine = pyttsx3.init()
         
-    print(f"\nLUFFY: {audio}")
+    print(f"\nStrawhat: {audio}")
     engine.say(audio)
     engine.runAndWait()
 
@@ -39,17 +39,17 @@ def wish_me():
     """Greet the user based on the time of day."""
     hour = datetime.datetime.now().hour
     if 0 <= hour < 12:
-        speak("Good Morning!")
+        speak("Good Morning! Shishishi!")
     elif 12 <= hour < 18:
-        speak("Good Afternoon!")
+        speak("Good Afternoon! Have you eaten meat yet?!")
     else:
-        speak("Good Evening!")
+        speak("Good Evening! I'm so hungry!")
 
 def listen():
     """Listen to the microphone and convert speech to text."""
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
-        print("\nLUFFY is Listening...")
+        print("\nListening...")
         # Brief pause to adjust to background noise
         recognizer.pause_threshold = 1
         recognizer.adjust_for_ambient_noise(source, duration=0.5)
@@ -114,12 +114,12 @@ def process_command(query):
             res = requests.get('https://wttr.in/?format="%C with a temperature of %t"')
             speak(res.text.replace('"', ''))
         except Exception as e:
-            speak("Sorry, I couldn't connect to the weather service.")
+            speak("Sumimasen, I couldn't connect to the weather service.")
         return True
 
     # 4.5 Conversational Greetings
     elif 'hello' in query or 'hi' in query or 'how are you' in query or 'good morning' in query or 'good afternoon' in query or 'good evening' in query:
-        speak("Greetings! I am functioning perfectly and ready to help.")
+        speak("Yosh! I'm Luffy! The man who will become the Pirate King! What's up?")
         return True
 
     # 4.75 Play Music on YouTube
@@ -150,9 +150,63 @@ def process_command(query):
                 except Exception:
                     speak("Sorry, I failed to send the WhatsApp message.")
             else:
-                speak("I didn't catch the message. Canceling.")
+                speak("I didn't catch the message. Cancelling.")
         elif name != "none":
-            speak(f"I am sorry, but {name} is not saved in my contacts.")
+            speak(f"Gomennesai, but {name} is not saved in my contacts.")
+        return True
+
+    # 5.5 Crewmate Features (Zoro, Sanji, Nami, Usopp)
+    elif 'zoro' in query or 'lost' in query:
+        import random
+        places = ["the Recycle Bin!", "System32!", "the Cloud?!", "a different hard drive?!", "Grand Line?! Wait, no, this is a C: Drive!"]
+        speak(f"What do you mean I'm lost?! I'm obviously right... wait, how did I get to {random.choice(places)} You guys must have moved!")
+        return True
+        
+    elif 'sanji' in query or 'food' in query or 'hungry' in query:
+        speak("Did someone say food?! I will prepare the finest cuisine! ...Wait, I'm stuck in this computer. I can't cook here! Damn this digital prison! I need to serve Nami-swaaan!")
+        return True
+
+    elif 'nami' in query or 'money' in query or 'beri' in query:
+        speak("If you want my help, it'll cost you 100,000 Berries! ...Just kidding, but really, where's the treasure?!")
+        return True
+        
+    elif 'usopp' in query or 'sniper' in query:
+        speak("I have 8,000 files following me on this hard drive! I am the great Captain Usopp! ...Oh no, my antivirus detected malware! I suddenly have I-can't-fight-this-virus disease!")
+        return True
+        
+    elif 'robin' in query or 'history' in query or 'poneglyph' in query:
+        speak("Fufufu. The history of your browser is quite fascinating... I found a Poneglyph hidden in your system logs. It says... wait, I shouldn't read this out loud.")
+        return True
+
+    elif 'franky' in query or 'tech' in query or 'super' in query:
+        speak("SUUUUUPER! This computer's architecture is amazing! Give me some cola and I'll upgrade your RAM to blast cola-powered lasers!")
+        return True
+        
+    elif 'chopper' in query or 'doctor' in query or 'medicine' in query or 'sick' in query:
+        speak("Call a doctor! Wait, I am a doctor! ...And shut up, praising me won't make me happy you jerk~! But remember to rest your eyes!")
+        return True
+        
+    elif 'brook' in query or 'skull' in query or 'yohoho' in query:
+        speak("Yohohoho! I would play you a beautiful song... but I don't have a body to hold the violin! Because I'm trapped in a PC! Yohohoho!")
+        return True
+
+    elif 'bounty' in query or 'wanted poster' in query:
+        import random
+        user_bounty = random.randint(100, 3000)
+        speak(f"Let me check the latest wanted posters... Whoa! Your bounty is {user_bounty} million berries! You're becoming a big name in the New World!")
+        return True
+        
+    elif 'top anime' in query or 'anime news' in query:
+        speak("Let me check what's popular in the anime world right now!")
+        try:
+            url = "https://api.jikan.moe/v4/top/anime?filter=airing&limit=3"
+            response = requests.get(url).json()
+            titles = []
+            for anime in response.get('data', []):
+                titles.append(anime.get('title_english') or anime.get('title'))
+            speak(f"Here are the top airing anime right now: {', '.join(titles)}! We should watch them... right after we find the One Piece!")
+        except Exception as e:
+            speak("Gomen! The News Coo didn't deliver the paper today!")
         return True
 
     # 5. Local System Control
@@ -174,14 +228,14 @@ def process_command(query):
 
     # 6. Exit/Quit Feature
     elif 'exit' in query or 'quit' in query or 'stop' in query:
-        speak("Goodbye! Have a great day.")
+        speak("See ya! I'm gonna go eat some meat! Shishishi!")
         return False # Return False to break the loop and close the program
     
     # 6. Ultimate Brain: Google Gemini AI
     elif query != "none" and query != "":
-        speak("Consulting my AI networks...")
+        speak("Hold on, let me think...")
         try:
-            prompt = f"You are Luffy, a highly intelligent and helpful AI assistant. The user says: '{query}'. Provide a very concise, conversational response (1 to 2 sentences max)."
+            prompt = f"You are Monkey D. Luffy from One Piece. Act exactly like him: energetic, simple-minded, hungry for meat, and fiercely loyal. The user says: '{query}'. Provide a very concise, conversational response (1 to 2 sentences max). Use catchphrases like 'Shishishi!' or talk about pirates/meat when relevant. Never break character."
             
             # Use the brand new modern Google GenAI protocol!
             response = gemini_client.models.generate_content(
@@ -207,7 +261,7 @@ def run_assistant():
     pythoncom.CoInitialize()
     
     wish_me()
-    speak("I am ready. I will only respond if you say my name first.")
+    speak("Yosh! I'm ready for an adventure. Just state my name, Luffy!")
     
     active = True
     while active:
