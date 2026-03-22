@@ -12,7 +12,7 @@ engine = None
 
 # Initialize Google Gemini AI
 try:
-    gemini_client = genai.Client(api_key="AIzaSyAAORVSZqh_JR7vDSDLXPpF0aP0nsyYSRo")
+    gemini_client = genai.Client(api_key="xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 except Exception as e:
     print("Warning: Failed to configure Gemini AI.")
 
